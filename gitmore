@@ -46,16 +46,29 @@ def get_default_branch() -> str:
 def get_current_branch() -> str:
   return execute_as_lines(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])[0]
 
-# Fetch changes to all branches and rebase changes to the current branch
-def retrieve_changes(rebase = False) -> None:
-  subprocess.check_call(['git', 'fetch', '--all', '--prune', '--prune-tags'])
-  merge_options = ['rebase'] if rebase else ['merge', '--no-edit']
-  subprocess.check_call(['git'] + merge_options + ['FETCH_HEAD'])
+# Fetch changes to all branches if possible and merge the fetched changes to the current branch
+def retrieve_changes(current_branch: str, default_branch: str, current_branch_only = False) -> None:
+  extra_remotes = list_extra_remotes()
+
+  # Retrieve changes for the current branch and use alternative remote for the default branch if available
+  specific_remote = [extra_remotes[0], current_branch] if current_branch == default_branch and extra_remotes else []
+  if current_branch_only or specific_remote:
+    subprocess.check_call(['git', 'pull', '--prune'] + specific_remote)
+  else:
+    # Retrieve changes for all branches
+    subprocess.check_call(['git', 'fetch', '--all', '--prune', '--prune-tags'])
+    subprocess.check_call(['git', 'merge', 'FETCH_HEAD'])
 
 # Publish changes to all branches
 def publish_changes(upstream_branch: str = None) -> None:
   set_upstream_option = ['-u', 'origin', upstream_branch] if upstream_branch else []
   subprocess.check_call(['git', 'push'] + set_upstream_option)
+
+# List remote repositories other than origin.
+def list_extra_remotes():
+  remotes = execute_as_lines(['git', 'remote'])
+  remotes.remove('origin')
+  return remotes
 
 # List branches by location or merge state
 def list_branches(remote: bool = False, merged_branch: str = None) -> List[str]:
@@ -128,7 +141,7 @@ def synchronize(operation: str, description: str, arguments: List[str]) -> None:
   remote_branches = list_branches(remote = True)
   local_tracking_branches = list_local_tracking_branches()
   default_branch = get_default_branch()
-  current_branch = next(iter(local_branches), default_branch)
+  current_branch = get_current_branch()
 
   # Publish current local-only branch
   if current_branch not in local_tracking_branches:
@@ -139,8 +152,8 @@ def synchronize(operation: str, description: str, arguments: List[str]) -> None:
     new_remote_branches = sorted(list(set(remote_branches) - set(local_branches)))
     track_remote_branches(new_remote_branches)
 
-  # Retrieve changes for all branches
-  retrieve_changes()
+  # Retrieve changes to all branches if possible
+  retrieve_changes(current_branch, default_branch)
 
   # Delete local branches tracking non-existent remote branches
   if options.prune:
@@ -161,11 +174,18 @@ def pullmerge(operation: str, description: str, arguments: List[str]) -> None:
     raise Exception('Missing branch name')
   branch = arguments[0]
   current_branch = get_current_branch()
+  default_branch = get_default_branch()
   if branch == current_branch:
     raise Exception('Invalid branch name')
-  subprocess.check_call(['git', 'pull'])
+
+  # Retrieve changes to the source branch
+  retrieve_changes(current_branch, default_branch, current_branch_only = True)
+
+  # Retrieve changes to the target branch
   subprocess.check_call(['git', 'checkout', branch])
-  subprocess.check_call(['git', 'pull'])
+  retrieve_changes(current_branch, default_branch, current_branch_only = True)
+
+  # Perform the merge operation
   subprocess.check_call(['git', 'checkout', current_branch])
   subprocess.check_call(['git', 'merge', branch] + arguments[1:])
 
