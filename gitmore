@@ -76,7 +76,8 @@ def list_branches(remote: bool = False, merged_branch: str = None) -> List[str]:
   merged_option = (['--merged', merged_branch] if merged_branch else [])
   lines = execute_as_lines(['git', 'branch'] + remote_option + merged_option)
   if remote:
-    branches = [line.split('/', 1)[1] for line in lines if line and '->' not in line]
+    entries = [line.split('/', 1) for line in lines if line and '->' not in line]
+    branches = [entry[1] for entry in entries if entry[0] == 'origin']
   else:
     branches = [line for line in lines if line]
     current_branch = next((branch for branch in branches if branch.startswith('*')), None)
