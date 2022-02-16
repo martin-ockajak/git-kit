@@ -12,6 +12,7 @@ import sys
 # Parse operation-line arguments
 def parse_arguments(arguments: List[str], operations: Dict[str, Tuple[str, str]]) -> str:
   parser = argparse.ArgumentParser(
+    description = 'Perform additional Git operations.',
     usage = '''
   %(prog)s <operation> [arguments] - Perform specified operation.
   %(prog)s <operation> -h          - Display specified operation help.''',
