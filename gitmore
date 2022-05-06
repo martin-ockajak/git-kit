@@ -96,7 +96,7 @@ def list_local_tracking_branches() -> List[str]:
     if len(fields) > 2:
       if fields[0] == '*':
         fields = fields[1:]
-      if fields[2].startswith('[') and (fields[2].endswith(']') or fields[2].endswith(':')):
+      if fields[2].startswith('[origin') and (fields[2].endswith(']') or fields[2].endswith(':')):
         branches.append(fields[0])
   return branches
 
@@ -170,7 +170,7 @@ def synchronize(operation: str, description: str, arguments: List[str]) -> None:
 def amend(operation: str, description: str, arguments: List[str]) -> None:
   subprocess.check_call(['git', 'commit', '--amend', '-C', 'HEAD'])
 
-# Head merge command.
+# Pull merge command.
 def pullmerge(operation: str, description: str, arguments: List[str]) -> None:
   if not arguments:
     raise Exception('Missing branch name')
@@ -185,7 +185,7 @@ def pullmerge(operation: str, description: str, arguments: List[str]) -> None:
 
   # Retrieve changes to the target branch
   subprocess.check_call(['git', 'checkout', branch])
-  retrieve_changes(current_branch, default_branch, current_branch_only = True)
+  retrieve_changes(branch, default_branch, current_branch_only = True)
 
   # Perform the merge operation
   subprocess.check_call(['git', 'checkout', current_branch])
