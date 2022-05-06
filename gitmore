@@ -235,7 +235,7 @@ def install(operation: str, description: str, arguments: List[str]) -> None:
     help = 'Git repository path.'
   )
   options = parser.parse_args(arguments)
-  script_path = os.path.abspath(os.path.join(options.repository, '.git', __file__))
+  script_path = os.path.abspath(os.path.join(options.repository, '.git', os.path.basename(__file__)))
   with open(__file__) as source_file:
     source = source_file.read()
     with open(script_path, 'w+') as script_file:
@@ -245,6 +245,7 @@ def install(operation: str, description: str, arguments: List[str]) -> None:
       path = script_path.replace('\\', '\\\\')
       command_line = f'!python3 {path} {alias} $@'
       subprocess.check_call(['git', 'config', f'alias.{alias}', command_line], stdout = subprocess.PIPE)
+  print(f'Installed: {script_path}\n')
   more('', '', [])
 
 # Entry point
