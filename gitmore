@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-from typing import Any, Callable, Dict, Generic, Iterable, List, Optional, Sequence, Sized, Union, Tuple, TypeVar
 import argparse
 import collections
 import itertools
@@ -10,7 +9,7 @@ import sys
 
 
 # Parse operation-line arguments
-def parse_arguments(arguments: List[str], operations: Dict[str, Tuple[str, str]]) -> str:
+def parse_arguments(arguments: list[str], operations: dict[str, (str, str)]) -> str:
   parser = argparse.ArgumentParser(
     description = 'Perform additional Git operations.',
     usage = '''
@@ -33,7 +32,7 @@ def get_script_directory() -> str:
   return os.path.dirname(os.path.realpath(__file__))
 
 # Execute command and parse its output into lines without surrounding whitespace or empty lines.
-def execute_as_lines(command: List[str]) -> List[str]:
+def execute_as_lines(command: list[str]) -> list[str]:
   output = subprocess.check_output(command).decode("utf-8")
   lines = list(itertools.takewhile(lambda line: line, itertools.dropwhile(lambda line: not line, output.split('\n'))))
   return [line.strip() for line in lines]
@@ -65,30 +64,32 @@ def publish_changes(upstream_branch: str = None) -> None:
   set_upstream_option = ['-u', 'origin', upstream_branch] if upstream_branch else []
   subprocess.check_call(['git', 'push'] + set_upstream_option)
 
-# List remote repositories other than origin.
+# list remote repositories other than origin.
 def list_extra_remotes():
   remotes = execute_as_lines(['git', 'remote'])
   remotes.remove('origin')
   return remotes
 
-# List branches by location or merge state
-def list_branches(remote: bool = False, merged_branch: str = None) -> List[str]:
-  remote_option = (['-r'] if remote else [])
-  merged_option = (['--merged', merged_branch] if merged_branch else [])
-  lines = execute_as_lines(['git', 'branch'] + remote_option + merged_option)
-  if remote:
-    entries = [line.split('/', 1) for line in lines if line and '->' not in line]
-    branches = [entry[1] for entry in entries if entry[0] == 'origin']
-  else:
-    branches = [line for line in lines if line]
-    current_branch = next((branch for branch in branches if branch.startswith('*')), None)
-    if current_branch:
-      branches.remove(current_branch)
-      branches.insert(0, current_branch[1:].strip())
+# list remote branches
+def list_remote_branches(remote: bool = False, merged_branch: str = None) -> list[str]:
+  lines = execute_as_lines(['git', 'remote', 'show', 'origin'])
+  entries = [line.split() for line in lines]
+  branches = [entry[0] for entry in entries if entry[1] == 'tracked']
   return branches
 
-# List local branches which track remote branches
-def list_local_tracking_branches() -> List[str]:
+# list local branches merge state
+def list_local_branches(merged_branch: str = None) -> list[str]:
+  merged_option = (['--merged', merged_branch] if merged_branch else [])
+  lines = execute_as_lines(['git', 'branch'] + merged_option)
+  branches = [line for line in lines if line]
+  current_branch = next((branch for branch in branches if branch.startswith('*')), None)
+  if current_branch:
+    branches.remove(current_branch)
+    branches.insert(0, current_branch[1:].strip())
+  return branches
+
+# list local branches which track remote branches
+def list_local_tracking_branches() -> list[str]:
   lines = execute_as_lines(['git', 'branch', '-lvv'])
   branches = []
   for line in lines:
@@ -101,7 +102,7 @@ def list_local_tracking_branches() -> List[str]:
   return branches
 
 # Create local branches to track specified remote branches
-def track_remote_branches(branches: List[str]) -> None:
+def track_remote_branches(branches: list[str]) -> None:
   for branch in branches:
     subprocess.check_call(['git', 'branch', '-t', branch, f'origin/{branch}'], stdout = subprocess.PIPE)
   if branches:
@@ -109,7 +110,7 @@ def track_remote_branches(branches: List[str]) -> None:
     print(f'Fetched remote branches:\n{branch_list}')
 
 # Delete specified branches
-def delete_branches(branches: List[str]) -> None:
+def delete_branches(branches: list[str]) -> None:
   for branch in branches:
     subprocess.check_call(['git', 'branch', '-D', branch], stdout = subprocess.PIPE)
   if branches:
@@ -117,7 +118,7 @@ def delete_branches(branches: List[str]) -> None:
     print(f'Deleted local branches:\n{branch_list}')
 
 # Synchronize command.
-def synchronize(operation: str, description: str, arguments: List[str]) -> None:
+def synchronize(operation: str, description: str, arguments: list[str]) -> None:
   # Parse arguments
   parser = argparse.ArgumentParser(
     usage = f'%(prog)s {operation}',
@@ -138,9 +139,9 @@ def synchronize(operation: str, description: str, arguments: List[str]) -> None:
   )
   options = parser.parse_args(arguments)
 
-  # List branches
-  local_branches = list_branches()
-  remote_branches = list_branches(remote = True)
+  # list branches
+  local_branches = list_local_branches()
+  remote_branches = list_remote_branches()
   local_tracking_branches = list_local_tracking_branches()
   default_branch = get_default_branch()
   current_branch = get_current_branch()
@@ -167,11 +168,11 @@ def synchronize(operation: str, description: str, arguments: List[str]) -> None:
     publish_changes()
 
 # Amend command.
-def amend(operation: str, description: str, arguments: List[str]) -> None:
+def amend(operation: str, description: str, arguments: list[str]) -> None:
   subprocess.check_call(['git', 'commit', '--amend', '-C', 'HEAD'])
 
 # Pull merge command.
-def pullmerge(operation: str, description: str, arguments: List[str]) -> None:
+def pullmerge(operation: str, description: str, arguments: list[str]) -> None:
   if not arguments:
     raise Exception('Missing branch name')
   branch = arguments[0]
@@ -192,11 +193,11 @@ def pullmerge(operation: str, description: str, arguments: List[str]) -> None:
   subprocess.check_call(['git', 'merge', branch] + arguments[1:])
 
 # Graph log command.
-def graphlog(operation: str, description: str, arguments: List[str]) -> None:
+def graphlog(operation: str, description: str, arguments: list[str]) -> None:
   subprocess.check_call(['git', 'log', '--all', '--graph', '--stat', '--pretty=format:%C(ul red)%h%C(reset) -%C(yellow)%d%C(reset) %C(cyan)%s%C(reset) %C(bold blue)<%an>%C(reset) %C(magenta)(%cr)%C(reset)', '--abbrev-commit'] + arguments)
 
 # Branch log command.
-def branchlog(operation: str, description: str, arguments: List[str]) -> None:
+def branchlog(operation: str, description: str, arguments: list[str]) -> None:
   branch = arguments[0] if arguments else get_current_branch()
   subprocess.check_call(['git', 'log', '--stat', '--pretty=format:%C(ul red)%h%C(reset) -%C(yellow)%d%C(reset) %C(cyan)%s%C(reset) %C(bold blue)<%an>%C(reset) %C(magenta)(%cr)%C(reset)', '--abbrev-commit', '--first-parent', branch] + arguments[1:])
 
@@ -209,7 +210,7 @@ operations = collections.OrderedDict([
 ])
 
 # More command.
-def more(operation: str, description: str, arguments: List[str]) -> None:
+def more(operation: str, description: str, arguments: list[str]) -> None:
   print('Git command aliases invoking GitMore operations:\n')
   for alias, (description, _) in operations.items():
     if alias != 'install':
@@ -220,7 +221,7 @@ def more(operation: str, description: str, arguments: List[str]) -> None:
 ''')
 
 # Install into current Git repository.
-def install(operation: str, description: str, arguments: List[str]) -> None:
+def install(operation: str, description: str, arguments: list[str]) -> None:
   # Parse arguments
   parser = argparse.ArgumentParser(
     usage = f'%(prog)s {operation} [repository]',
@@ -250,7 +251,7 @@ def install(operation: str, description: str, arguments: List[str]) -> None:
 
 # Entry point
 def main() -> int:
-  operations['more'] = ('List Git command aliases invoking GitMore operations.', more)
+  operations['more'] = ('list Git command aliases invoking GitMore operations.', more)
   operations['install'] = ('Install Git command aliases invoking GitMore operations.', install)
   operation = parse_arguments(sys.argv[1:min(len(sys.argv), 2)], operations)
   operations[operation][1](operation, operations[operation][0], sys.argv[2:])
