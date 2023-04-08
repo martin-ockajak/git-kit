@@ -13,6 +13,7 @@
 * **pullmerge** - Merge the specified branch into the current branch using the last revision of both branches.
 * **graphlog** - Display commit log for all branches as a graph.
 * **branchlog** - Display commit log for specified branch only.
+* **deletebranch** - Delete both local and remote instances of the specified branch.
 * **more** - List Git command aliases invoking GitMore operations.
 
 # Examples
