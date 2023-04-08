@@ -209,6 +209,22 @@ operations = collections.OrderedDict([
   ('branchlog', ('Display commit log for specified branch only.', branchlog))
 ])
 
+def deletebranch(operation: str, description: str, arguments: list[str]) -> None:
+  if not arguments:
+    raise Exception('Missing branch name')
+  branch = arguments[0]
+  subprocess.check_call(['git', 'branch', '-D', branch] + arguments[1:])
+  subprocess.check_call(['git', 'push', 'origin', '-d', branch] + arguments[1:])
+
+operations = collections.OrderedDict([
+  ('sync', ('Pull changes from all remote branches and push changes to the current branch.', synchronize)),
+  ('amend', ('Add staged changes to the last commit.', amend)),
+  ('pullmerge', ('Merge the specified branch into the current branch using the last revision of both branches.', pullmerge)),
+  ('graphlog', ('Display commit log for all branches as a graph.', graphlog)),
+  ('branchlog', ('Display commit log for specified branch only.', branchlog)),
+  ('deletebranch', ('Delete both local and remote instances of the specified branch.', deletebranch))
+])
+
 # More command.
 def more(operation: str, description: str, arguments: list[str]) -> None:
   print('Git command aliases invoking GitMore operations:\n')
@@ -251,7 +267,7 @@ def install(operation: str, description: str, arguments: list[str]) -> None:
 
 # Entry point
 def main() -> int:
-  operations['more'] = ('list Git command aliases invoking GitMore operations.', more)
+  operations['more'] = ('List Git command aliases invoking GitMore operations.', more)
   operations['install'] = ('Install Git command aliases invoking GitMore operations.', install)
   operation = parse_arguments(sys.argv[1:min(len(sys.argv), 2)], operations)
   operations[operation][1](operation, operations[operation][0], sys.argv[2:])
