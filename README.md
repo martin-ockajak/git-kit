@@ -7,7 +7,7 @@
 * [Installation](#installation)
 
 
-# Git aliases
+# Aliases
 
 * **sync** - Pull changes from all remote branches and push changes to the current branch.
 * **amend** - Add staged changes to the last commit.
