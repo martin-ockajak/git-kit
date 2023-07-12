@@ -6,15 +6,19 @@
 * [Examples](#examples)
 * [Installation](#installation)
 
-# Aliases
+
+# Git aliases
 
 * **sync** - Pull changes from all remote branches and push changes to the current branch.
 * **amend** - Add staged changes to the last commit.
-* **pullmerge** - Merge the specified branch into the current branch using the last revision of both branches.
+* **pullmerge** - Merge a branch into the current branch using the last revision of both branches.
+* **blankmerge** - Merge a branch into the current branch without applying any changes.
 * **graphlog** - Display commit log for all branches as a graph.
 * **branchlog** - Display commit log for specified branch only.
-* **deletebranch** - Delete both local and remote instances of the specified branch.
+* **createbranch** - Create a local branch and push its tracked remote branch.
+* **deletebranch** - Delete both a local branch and its tracked remote branch.
 * **more** - List Git command aliases invoking GitMore operations.
+
 
 # Examples
 
@@ -51,17 +55,17 @@ git sync -p
 * [Python 3](https://www.python.org/)
 * [cURL](https://curl.se/) - required for quick installation only
 
-**GitMore** is installed directly into a Git repository but it can also be used directly without installation.
+**GitMore** is installed into a Git repository but it can also be used directly without installation.
 
-Run the following command in the root directory of selected Git repository.
+Run the following commands in the root directory of a Git repository.
 
 ```bash
-curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore -o gitmore && \
-python3 gitmore install && \
+curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore -o gitmore
+python3 gitmore install
 rm gitmore
 ```
 
-# Inspiration
+# Inspired by
 
 * [Gitless](https://gitless.com/)
 * [Mercurial](https://www.mercurial-scm.org)
