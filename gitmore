@@ -62,7 +62,7 @@ def retrieve_changes(current_branch: str, default_branch: str, current_branch_on
 # Publish changes to all branches
 def publish_changes(upstream_branch: str = None) -> None:
   set_upstream_option = ['-u', 'origin', upstream_branch] if upstream_branch else []
-  subprocess.check_call(['git', 'push'] + set_upstream_option)
+  subprocess.check_call(['git', 'push', '--follow-tags'] + set_upstream_option)
 
 # list remote repositories other than origin.
 def list_extra_remotes():
