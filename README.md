@@ -33,7 +33,7 @@ Run the following command from within root directory of a Git repository to inst
 curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore | python3 - install .
 ```
 
-*GitMore* can also be used directly without installation.
+Alternatively, *GitMore* can also be downloaded used directly as a script without installation.
 
 
 # Examples
