@@ -20,6 +20,26 @@
 * **more** - List Git command aliases invoking GitMore operations.
 
 
+# Installation
+
+**Requirements**
+
+* [Git](https://git-scm.com/)
+* [Python 3](https://www.python.org/)
+* [cURL](https://curl.se/) - required for quick installation only
+
+**GitMore** is installed into a Git repository but it can also be used directly without installation.
+
+Run the following commands in the root directory of a Git repository.
+
+```bash
+curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore -o gitmore
+python3 gitmore install
+rm gitmore
+git more
+```
+
+
 # Examples
 
 **Display Git command aliases invoking GitMore operations.**
@@ -45,25 +65,6 @@ git sync -a
 **Synchronize changes to checked out branches and delete local branches tracking non-existent remote branches.**
 ```
 git sync -p
-```
-
-# Installation
-
-**Requirements**
-
-* [Git](https://git-scm.com/)
-* [Python 3](https://www.python.org/)
-* [cURL](https://curl.se/) - required for quick installation only
-
-**GitMore** is installed into a Git repository but it can also be used directly without installation.
-
-Run the following commands in the root directory of a Git repository.
-
-```bash
-curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore -o gitmore
-python3 gitmore install
-rm gitmore
-git more
 ```
 
 # Inspired by
