@@ -26,7 +26,7 @@
 
 * [Git](https://git-scm.com/)
 * [Python 3](https://www.python.org/)
-* [cURL](https://curl.se/) - required for quick installation only
+* [cURL](https://curl.se/) (for quick installation only)
 
 Run the following command from within root directory of a Git repository to install *GitMore* into it:
 ```bash
