@@ -33,9 +33,7 @@
 Run the following commands in the root directory of a Git repository.
 
 ```bash
-curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore -o gitmore
-python3 gitmore install
-rm gitmore
+curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore | python3 - install
 ```
 
 

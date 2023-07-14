@@ -2,6 +2,7 @@
 
 import argparse
 import collections
+import inspect
 import itertools
 import os
 import subprocess
@@ -191,10 +192,9 @@ def install(operation: str, description: str, arguments: list[str]) -> None:
   )
   options = parser.parse_args(arguments)
   script_path = os.path.abspath(os.path.join(options.repository, '.git', os.path.basename(__file__)))
-  with open(__file__) as source_file:
-    source = source_file.read()
-    with open(script_path, 'w+') as script_file:
-      script_file.write(source)
+  source = ''.join(inspect.getsourcelines(sys.modules[__name__])[0])
+  with open(script_path, 'w+') as script_file:
+    script_file.write(source)
   for alias, (description, _) in operations.items():
     if alias != operation:
       path = script_path.replace('\\', '\\\\')
