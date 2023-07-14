@@ -2,11 +2,15 @@
 
 import argparse
 import collections
-import inspect
 import itertools
 import os
 import subprocess
 import sys
+import urllib.request
+
+# Script URL
+script_name = 'gitmore'
+script_url = f'https://raw.githubusercontent.com/martin-ockajak/gitmore/main/{script_name}'
 
 
 # Entry point
@@ -191,10 +195,10 @@ def install(operation: str, description: str, arguments: list[str]) -> None:
     help = 'Git repository path.'
   )
   options = parser.parse_args(arguments)
-  script_path = os.path.abspath(os.path.join(options.repository, '.git', os.path.basename(__file__)))
-  source = ''.join(inspect.getsourcelines(sys.modules[__name__])[0])
-  with open(script_path, 'w+') as script_file:
-    script_file.write(source)
+  script_path = os.path.abspath(os.path.join(options.repository, '.git', script_name))
+  with urllib.request.urlopen(script_url) as source:
+    with open(script_path, 'w+') as script_file:
+      script_file.write(source.read().decode('utf-8'))
   for alias, (description, _) in operations.items():
     if alias != operation:
       path = script_path.replace('\\', '\\\\')
@@ -292,11 +296,6 @@ def get_default_branch() -> str:
 # Determine current branch.
 def get_current_branch() -> str:
   return execute_as_lines(['git', 'rev-parse', '--abbrev-ref', 'HEAD'])[0]
-
-
-# Determine script directory.
-def get_script_directory() -> str:
-  return os.path.dirname(os.path.realpath(__file__))
 
 
 # Execute command and parse its output into lines without surrounding whitespace or empty lines.
