@@ -28,13 +28,12 @@
 * [Python 3](https://www.python.org/)
 * [cURL](https://curl.se/) - required for quick installation only
 
-**GitMore** is installed into a Git repository but it can also be used directly without installation.
-
-Run the following commands in the root directory of a Git repository.
-
+Run the following command from within root directory of a Git repository to install *GitMore* into it:
 ```bash
-curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore | python3 - install
+curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore | python3 - install .
 ```
+
+*GitMore* can also be used directly without installation.
 
 
 # Examples
