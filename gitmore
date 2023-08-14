@@ -143,8 +143,8 @@ def createbranch(operation: str, description: str, arguments: list[str]) -> None
   if not arguments:
     raise Exception('Missing branch name')
   branch = arguments[0]
-  subprocess.check_call(['git', 'checkout', '-b', branch] + arguments[1:])
-  subprocess.check_call(['git', 'push', '--set-upstream', 'origin', branch] + arguments[1:])
+  subprocess.check_call(['git', 'checkout', '-b', branch])
+  subprocess.check_call(['git', 'push', '--set-upstream', 'origin', branch])
 
 
 # Delete branch command.
@@ -152,8 +152,8 @@ def deletebranch(operation: str, description: str, arguments: list[str]) -> None
   if not arguments:
     raise Exception('Missing branch name')
   branch = arguments[0]
-  subprocess.check_call(['git', 'branch', '-D', branch] + arguments[1:])
-  subprocess.check_call(['git', 'push', 'origin', '-d', branch] + arguments[1:])
+  subprocess.check_call(['git', 'branch', '-D', branch])
+  subprocess.check_call(['git', 'push', 'origin', '-d', branch])
 
 operations = collections.OrderedDict([
   ('sync', ('Pull changes from all remote branches and push changes to the current branch.', synchronize)),
