@@ -204,6 +204,7 @@ def install(operation: str, description: str, arguments: list[str]) -> None:
       path = script_path.replace('\\', '\\\\')
       command_line = f'!python3 {path} {alias} $@'
       subprocess.check_call(['git', 'config', f'alias.{alias}', command_line], stdout = subprocess.PIPE)
+  subprocess.check_call(['git', 'remote', 'set-head' , 'origin', '--auto'])
   print(f'Installed: {script_path}\n')
   more('', '', [])
 
