@@ -2,6 +2,8 @@
 
 **GitMore** is a simple tool for enhancing the usability of Git by providing several convenient aliases.
 
+The functionality is similar to and can be considered an extension of [Git Extras](https://github.com/tj/git-extras).
+
 * [Aliases](#aliases)
 * [Examples](#examples)
 * [Installation](#installation)
