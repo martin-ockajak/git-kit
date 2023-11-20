@@ -54,7 +54,7 @@ def distribute(operation: str, description: str, arguments: list[str]) -> None:
     '-a',
     '--all',
     action = "store_true",
-    help = 'Synchronize all remote branches.'
+    help = 'Pull changes from all remote branches and push changes to the current branch.'
   )
   parser.add_argument(
     '-p',
