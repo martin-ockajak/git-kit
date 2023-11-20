@@ -42,8 +42,8 @@ def parse_arguments(arguments: list[str], operations: dict[str, (str, str)]) -> 
   return parser.parse_args(arguments).operation[0]
 
 
-# Synchronize command.
-def synchronize(operation: str, description: str, arguments: list[str]) -> None:
+# Distribute command.
+def distribute(operation: str, description: str, arguments: list[str]) -> None:
   # Parse arguments
   parser = argparse.ArgumentParser(
     usage = f'%(prog)s {operation}',
@@ -137,33 +137,13 @@ def branchlog(operation: str, description: str, arguments: list[str]) -> None:
   branch = arguments[0] if arguments else get_current_branch()
   subprocess.check_call(['git', 'log', '--stat', '--pretty=format:%C(ul red)%h%C(reset) -%C(yellow)%d%C(reset) %C(cyan)%s%C(reset) %C(bold blue)<%an>%C(reset) %C(magenta)(%cr)%C(reset)', '--abbrev-commit', '--first-parent', branch] + arguments[1:])
 
-
-# Create branch command.
-def createbranch(operation: str, description: str, arguments: list[str]) -> None:
-  if not arguments:
-    raise Exception('Missing branch name')
-  branch = arguments[0]
-  subprocess.check_call(['git', 'checkout', '-b', branch])
-  subprocess.check_call(['git', 'push', '--set-upstream', 'origin', branch])
-
-
-# Delete branch command.
-def deletebranch(operation: str, description: str, arguments: list[str]) -> None:
-  if not arguments:
-    raise Exception('Missing branch name')
-  branch = arguments[0]
-  subprocess.check_call(['git', 'branch', '-D', branch])
-  subprocess.check_call(['git', 'push', 'origin', '-d', branch])
-
 operations = collections.OrderedDict([
-  ('sync', ('Pull changes from all remote branches and push changes to the current branch.', synchronize)),
+  ('dist', ('Pull changes from all remote branches and push changes to the current branch.', distribute)),
   ('amend', ('Add staged changes to the last commit.', amend)),
   ('pullmerge', ('Merge a branch into the current branch using the last revision of both branches.', pullmerge)),
   ('blankmerge', ('Merge a branch into the current branch without applying any changes.', blankmerge)),
   ('graphlog', ('Display commit log for all branches as a graph.', graphlog)),
   ('branchlog', ('Display commit log for specified branch only.', branchlog)),
-  ('createbranch', ('Create a local branch and push its tracked remote branch.', createbranch)),
-  ('deletebranch', ('Delete both a local branch and its tracked remote branch.', deletebranch))
 ])
 
 

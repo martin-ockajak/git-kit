@@ -11,14 +11,12 @@ The functionality is similar to and can be considered an extension of [Git Extra
 
 # Aliases
 
-* **sync** - Pull changes from all remote branches and push changes to the current branch.
+* **dist** - Pull changes from all remote branches and push changes to the current branch.
 * **amend** - Add staged changes to the last commit.
 * **pullmerge** - Merge a branch into the current branch using the last revision of both branches.
 * **blankmerge** - Merge a branch into the current branch without applying any changes.
 * **graphlog** - Display commit log for all branches as a graph.
 * **branchlog** - Display commit log for specified branch only.
-* **createbranch** - Create a local branch and push its tracked remote branch.
-* **deletebranch** - Delete both a local branch and its tracked remote branch.
 * **more** - List Git command aliases invoking GitMore operations.
 
 
