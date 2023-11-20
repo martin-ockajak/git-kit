@@ -1,0 +1,8 @@
+# Build
+target
+__pycache__
+
+# IDE
+.idea
+*.iml
+
