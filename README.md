@@ -1,6 +1,6 @@
 # Overview
 
-**GitMore** is a simple tool for enhancing the usability of Git by providing several convenient aliases.
+**Git Kit** is a simple tool for enhancing the usability of Git by providing several convenient aliases.
 
 The functionality is similar to and can be considered an extension of [Git Extras](https://github.com/tj/git-extras).
 
@@ -11,13 +11,13 @@ The functionality is similar to and can be considered an extension of [Git Extra
 
 # Aliases
 
-* **dist** - Pull changes from all remote branches and push changes to the current branch.
+* **fuse** - Pull changes from all remote branches and push changes to the current branch.
 * **amend** - Add staged changes to the last commit.
 * **pullmerge** - Merge a branch into the current branch using the last revision of both branches.
 * **blankmerge** - Merge a branch into the current branch without applying any changes.
 * **graphlog** - Display commit log for all branches as a graph.
 * **branchlog** - Display commit log for specified branch only.
-* **more** - List Git command aliases invoking GitMore operations.
+* **kit** - List Git aliases invoking Git Kit commands.
 
 
 # Installation
@@ -28,39 +28,39 @@ The functionality is similar to and can be considered an extension of [Git Extra
 * [Python](https://www.python.org/)
 * [cURL](https://curl.se/) (for quick installation only)
 
-Run the following command from within root directory of a Git repository to install *GitMore* into it:
+Run the following command from within root directory of a Git repository to install *Git Kit* into it:
 ```bash
-curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitmore | python3 - install .
+curl https://raw.githubusercontent.com/martin-ockajak/gitmore/main/gitkit | python3 - install .
 ```
 
-Alternatively, *GitMore* can also be downloaded used directly as a script without installation.
+Alternatively, *Git Kit* can also be downloaded used directly as a script without installation.
 
 
 # Examples
 
-**Display Git command aliases invoking GitMore operations.**
+**Display Git command aliases invoking Git Kit commands.**
 ```
-git more
+git kit
 ```
 
-**Display help for specified GitMore operation.**
+**Display help for specified Git Kit operation.**
 ```
 git <operation> -h
 ```
 
 **Synchronize changes to checked out branches.**
 ```
-git sync
+git fuse
 ```
 
 **Synchronize changes to all branches.**
 ```
-git sync -a
+git fuse -a
 ```
 
 **Synchronize changes to checked out branches and delete local branches tracking non-existent remote branches.**
 ```
-git sync -p
+git fuse -p
 ```
 
 # Inspired by
