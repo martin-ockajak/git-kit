@@ -43,9 +43,9 @@ Alternatively, *Git Kit* can also be downloaded used directly as a script withou
 git kit
 ```
 
-**Display help for specified Git Kit operation.**
+**Display help for specified Git Kit command.**
 ```
-git <operation> -h
+git <command> -h
 ```
 
 **Synchronize changes to checked out branches.**
