@@ -99,7 +99,7 @@ def amend(command: str, description: str, arguments: list[str]) -> None:
 
 
 # Pull merge command.
-def pullmerge(command: str, description: str, arguments: list[str]) -> None:
+def pull_merge(command: str, description: str, arguments: list[str]) -> None:
   if not arguments:
     raise Exception('Missing branch name')
   branch = arguments[0]
@@ -121,7 +121,7 @@ def pullmerge(command: str, description: str, arguments: list[str]) -> None:
 
 
 # Blank merge command.
-def blankmerge(command: str, description: str, arguments: list[str]) -> None:
+def blank_merge(command: str, description: str, arguments: list[str]) -> None:
   if not arguments:
     raise Exception('Missing branch name')
   branch = arguments[0]
@@ -129,21 +129,21 @@ def blankmerge(command: str, description: str, arguments: list[str]) -> None:
 
 
 # Graph log command.
-def graphlog(command: str, description: str, arguments: list[str]) -> None:
+def graph_log(command: str, description: str, arguments: list[str]) -> None:
   subprocess.check_call(['git', 'log', '--all', '--graph', '--stat', '--pretty=format:%C(ul red)%h%C(reset) -%C(yellow)%d%C(reset) %C(cyan)%s%C(reset) %C(bold blue)<%an>%C(reset) %C(magenta)(%cr)%C(reset)', '--abbrev-commit'] + arguments)
 
 # Branch log command.
-def branchlog(command: str, description: str, arguments: list[str]) -> None:
+def branch_log(command: str, description: str, arguments: list[str]) -> None:
   branch = arguments[0] if arguments else get_current_branch()
   subprocess.check_call(['git', 'log', '--stat', '--pretty=format:%C(ul red)%h%C(reset) -%C(yellow)%d%C(reset) %C(cyan)%s%C(reset) %C(bold blue)<%an>%C(reset) %C(magenta)(%cr)%C(reset)', '--abbrev-commit', '--first-parent', branch] + arguments[1:])
 
 commands = collections.OrderedDict([
   ('fuse', ('Pull changes from all remote branches and push changes to the current branch.', fuse)),
   ('amend', ('Add staged changes to the last commit.', amend)),
-  ('pullmerge', ('Merge a branch into the current branch using the last revision of both branches.', pullmerge)),
-  ('blankmerge', ('Merge a branch into the current branch without applying any changes.', blankmerge)),
-  ('graphlog', ('Display commit log for all branches as a graph.', graphlog)),
-  ('branchlog', ('Display commit log for specified branch only.', branchlog)),
+  ('pull-merge', ('Merge a branch into the current branch using the last revision of both branches.', pull_merge)),
+  ('blank-merge', ('Merge a branch into the current branch without applying any changes.', blank_merge)),
+  ('graph-log', ('Display commit log for all branches as a graph.', graph_log)),
+  ('branch-log', ('Display commit log for specified branch only.', branch_log)),
 ])
 
 
