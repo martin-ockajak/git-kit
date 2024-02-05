@@ -9,7 +9,7 @@ import sys
 import urllib.request
 
 # Script URL
-script_name = 'gitkit'
+script_name = 'git-kit'
 script_url = f'https://raw.githubusercontent.com/martin-ockajak/git-kit/main/{script_name}'
 
 

@@ -30,7 +30,7 @@ The functionality is similar to and can be considered an extension of [Git Extra
 
 Run the following command from within root directory of a Git repository to install *Git Kit* into it:
 ```bash
-curl https://raw.githubusercontent.com/martin-ockajak/git-kit/main/gitkit | python3 - install .
+curl https://raw.githubusercontent.com/martin-ockajak/git-kit/main/git-kit | python3 - install .
 ```
 
 Alternatively, *Git Kit* can also be downloaded used directly as a script without installation.
