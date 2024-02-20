@@ -4,29 +4,29 @@
 
 The functionality is similar to and can be considered an extension of [Git Extras](https://github.com/tj/git-extras).
 
-* [Aliases](#aliases)
-* [Examples](#examples)
-* [Installation](#installation)
+- [Aliases](#aliases)
+- [Examples](#examples)
+- [Installation](#installation)
 
 
 # Aliases
 
-* **fuse** - Pull changes from all remote branches and push changes to the current branch.
-* **amend** - Add staged changes to the last commit.
-* **pullmerge** - Merge a branch into the current branch using the last revision of both branches.
-* **blankmerge** - Merge a branch into the current branch without applying any changes.
-* **graphlog** - Display commit log for all branches as a graph.
-* **branchlog** - Display commit log for specified branch only.
-* **kit** - List Git aliases invoking Git Kit commands.
+- **fuse** - Pull changes from all remote branches and push changes to the current branch.
+- **amend** - Add staged changes to the last commit.
+- **pullmerge** - Merge a branch into the current branch using the last revision of both branches.
+- **blankmerge** - Merge a branch into the current branch without applying any changes.
+- **graphlog** - Display commit log for all branches as a graph.
+- **branchlog** - Display commit log for specified branch only.
+- **kit** - List Git aliases invoking Git Kit commands.
 
 
 # Installation
 
 **Requirements**
 
-* [Git](https://git-scm.com/)
-* [Python](https://www.python.org/)
-* [cURL](https://curl.se/) (for quick installation only)
+- [Git](https://git-scm.com/)
+- [Python](https://www.python.org/)
+- [cURL](https://curl.se/) (for quick installation only)
 
 Run the following command from within root directory of a Git repository to install *Git Kit* into it:
 ```bash
@@ -65,6 +65,7 @@ git fuse -p
 
 # Inspired by
 
-* [Gitless](https://gitless.com/)
-* [Mercurial](https://www.mercurial-scm.org)
+- [Gitless](https://gitless.com/)
+- [Git Extras](https://github.com/tj/git-extras)
+- [Mercurial](https://www.mercurial-scm.org)
 
