@@ -270,8 +270,8 @@ def delete_branches(branches: list[str]) -> None:
 
 # Determine default branch.
 def get_default_branch() -> str:
-  lines = execute_as_lines(['git', 'symbolic-ref', '--short', 'refs/remotes/origin/HEAD'])
-  return lines[0].split('/', 1)[1]
+  lines = execute_as_lines(['git', 'remote', 'show', 'origin'])
+  return next((line.split(':')[1].strip() for line in lines if 'HEAD branch:' in line), 'main')
 
 
 # Determine current branch.
